@@ -15,7 +15,11 @@
 
                 if(isset($_GET['p_id'])){
                     $get_post_id = $_GET['p_id'];
-                };
+
+                    $view_query = "UPDATE posts SET post_view_count = post_view_count + 1 WHERE post_id = $get_post_id ";
+                    $send_view_query = mysqli_query($connection, $view_query);
+
+
 
                 $query = "SELECT * FROM posts WHERE post_id = $get_post_id ";
                 $select_all_posts_query = mysqli_query($connection, $query);
@@ -27,6 +31,7 @@
                     $post_content = $row["post_content"];
                     $post_status = $row["post_status"];
                     $post_id = $row["post_id"];
+
 
                     ?>
 
@@ -49,7 +54,16 @@
                             <p><?php echo $post_content; ?></p>
                             <hr>
 
-                <?php }; ?>
+                <?php
+                };
+              } else {
+
+                header("Location: index.php");
+
+              };
+
+
+                ?>
 
             <!-- Blog Comments -->
 
@@ -75,11 +89,14 @@
                               $update_post_comment_count = mysqli_query($connection, $query);
                           };
                       } else {
-                        echo "<script>
-                                alert('Fields cannot be empty')
-                              </script>";
-                      };
-              };
+                                echo "<script>
+                                  alert('Fields cannot be empty')
+                                  </script>";
+                            };
+
+              }; // end of if isset check
+
+          
             ?>
 
                 <!-- Comments Form -->

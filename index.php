@@ -11,7 +11,27 @@
             <div class="col-md-8">
             <?php
 
-                $query = "SELECT * FROM posts WHERE post_status = 'Published' ORDER BY post_id DESC";
+                if(isset($_GET['page'])) {
+                  $page = $_GET['page'];
+                } else {
+                  $page = '';
+                };
+
+                if($page == '' || $page == 1) {
+                  $page_1 = 0;
+                } else {
+                  $page_1 = ($page * 5) - 5;
+
+                };
+
+                $count_posts_query = "SELECT * FROM posts ";
+                $find_count = mysqli_query($connection, $count_posts_query);
+                $posts_count = mysqli_num_rows($find_count);
+
+                $posts_count = ceil($posts_count / 5);
+
+
+                $query = "SELECT * FROM posts WHERE post_status = 'Published' ORDER BY post_id DESC LIMIT $page_1, 5 ";
                 $select_all_posts_query = mysqli_query($connection, $query);
                 while($row = mysqli_fetch_assoc($select_all_posts_query)){
                     $post_id = $row["post_id"];
@@ -22,11 +42,12 @@
                     $post_content = substr($row["post_content"], 0,100);
                     $post_status = $row["post_status"];
 
-                    if ($post_status == 'Published'){
+                    if ($post_status == 'Published'){ //actually no need for if statement as we are already only retrieving published posts only
 
                     ?>
 
                         <!-- First Blog Post -->
+
                             <h2>
                                 <a href="post.php?p_id=<?php echo $post_id; ?>"><?php echo $post_title ?></a>
                             </h2>
@@ -48,6 +69,8 @@
            };
          };
 
+
+
          if(mysqli_num_rows($select_all_posts_query)==0){
              echo "<h1 class='text-center'>There are no published posts!</h1>";
          };
@@ -62,6 +85,22 @@
         <!-- /.row -->
 
         <hr>
+
+          <ul class="pager">
+              <?php
+
+                for($i = 1; $i <= $posts_count; $i++){
+                  if($i == $page){
+                    echo "<li><a class='active_link' href='index.php?page={$i}'>{$i}</a></li>";
+                  } else {
+                    echo "<li><a href='index.php?page={$i}'>{$i}</a></li>";
+                  };
+                };
+
+
+              ?>
+          </ul>
+
 
         <!-- Footer -->
         <?php include "includes/footer.php" ?>
