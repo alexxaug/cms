@@ -18,18 +18,19 @@
           $timeout_in_seconds = 60;
           $timeout = $time - $timeout_in_seconds;
 
-          $query = "SELECT * FROM users_online WHERE session = '$session' ";
-          $send_query = mysqli_query($connection; $query);
-          $count = mysqli_num_rows($send_query);
+          $get_users_query = "SELECT * FROM users_online WHERE session = '{$session}' ";
+          $send_get_users_query = mysqli_query($connection, $get_users_query);
+
+          $count = mysqli_num_rows($send_get_users_query);
 
           if ($count == NULL){
-
-            mysqli_query($connection, "INSERT INTO users_online(session, time) VALUES('$session', '$time') ");
+            mysqli_query($connection, "INSERT INTO users_online(session, time) VALUES('$session', '$time')");
           } else {
-
-            mysqli_query($connection, "UPDATE users_online SET time = '$time' WHERE session = '$session' ");
+            mysqli_query($connection, "UPDATE users_online SET time = '$time' WHERE session = '$session'");
           };
 
+          $users_online_query = mysqli_query($connection, "SELECT * FROM users_online WHERE time < $timeout ");
+          $count_user = mysqli_num_rows($users_online_query);
 
         ?>
 
@@ -47,6 +48,9 @@
                                 };
                               ?>
                           </small>
+                        </h1>
+                        <h1>
+                          <?php echo $count_user?>
                         </h1>
                     </div>
                 </div>
