@@ -21,10 +21,20 @@ $(document).ready(function(){
 
   // $("body").prepend(div_box);
 
-  //NOTE: as soon as you prepend this specific div box, the php breaks, and nothing works. 
+  //NOTE: as soon as you prepend this specific div box, the php breaks, and nothing works.
 
   // $('#load-screen').delay(700).fadeout(600, function(){
   //   $(this).remove();
   // });
 
   });
+
+  function loadUsersOnline() {
+    $.get("admin_functions.php?onlineusers=result", function(data){
+      $(".usersonline").text(data);
+    });
+  };
+
+setInterval(function(){
+  loadUsersOnline();
+},500);

@@ -11,7 +11,8 @@
             </div>
             <!-- Top Menu Items -->
             <ul class="nav navbar-right top-nav">
-               <li><a href="../index.php">Home Page</a></li>
+                <li><a href="">Users Online: <span class="usersonline"></span></a></li>
+                <li><a href="../index.php">Home Page</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-envelope"></i> <b class="caret"></b></a>
                     <ul class="dropdown-menu message-dropdown">
@@ -58,7 +59,7 @@
                                             <strong>
                                               <?php
                                                 if(isset($_SESSION['username'])){
-                                                  echo $_SESSION['username']; 
+                                                  echo $_SESSION['username'];
                                                 };
                                               ?>
                                           </strong>

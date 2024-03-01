@@ -1,5 +1,7 @@
 <?php
 
+
+
     function confirm_query($result){
         global $connection;
         if(!$result){
@@ -85,5 +87,36 @@
             echo "<option value='{$cat_id}'>{$cat_title}</option>";
         };
     };
+
+    function users_online(){
+
+      if(isset($_GET['onlineusers'])){
+
+        global $connection;
+        if(!$connection){
+          session_start();
+          include("../includes/db.php");
+
+          $session = session_id();
+          $time = time();
+          $timeout_in_seconds = 60;
+          $timeout = $time - $timeout_in_seconds;
+
+          $get_users_query = "SELECT * FROM users_online WHERE session = '$session'";
+          $send_get_users_query = mysqli_query($connection, $get_users_query);
+          $count = mysqli_num_rows($send_get_users_query);
+
+          if($count == NULL){
+            mysqli_query($connection, "INSERT INTO users_online(session, time) VALUES('$session', '$time')");
+          } else {
+            mysqli_query($connection, "UPDATE users_online SET time = '$time' WHERE session = '$session'");
+          };
+
+          $users_online_query = mysqli_query($connection, "SELECT * FROM users_online WHERE time > $timeout");
+          echo $count_user = mysqli_num_rows($users_online_query);
+        };
+    }; // GET Request isset
+  };
+  users_online();
 
 ?>
