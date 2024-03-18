@@ -9,7 +9,7 @@
       while($row = mysqli_fetch_assoc($select_users)){
             $user_id = $row["user_id"];
             $username = $row["username"];
-            //$user_password = $row["user_password"];
+            $user_password = $row["user_password"];
             $user_firstname = $row["user_firstname"];
             $user_lastname = $row["user_lastname"];
             $user_email = $row["user_email"];
@@ -19,7 +19,7 @@
 
       if(isset($_POST['edit_user'])){
           $username = $_POST['username'];
-          //$user_password = $_POST['user_password'];
+          $user_password = $_POST['user_password'];
           $user_firstname = $_POST['user_firstname'];
           $user_lastname = $_POST['user_lastname'];
           $user_email = $_POST['user_email'];
@@ -37,19 +37,22 @@
               };
           };
 
-          // $query1 = "SELECT randSalt FROM users ";
-          // $select_randsalt_query = mysqli_query($connection, $query1);
-          // confirm_query($select_randsalt_query);
-          //
-          // $row = mysqli_fetch_array($select_randsalt_query);
-          // $salt = $row['randSalt'];
-          // $hashed_password = crypt($user_password, $salt);
+          if(!empty($user_password)){
+            $query_password = "SELECT user_password FROM users WHERE user_id = $the_user_id ";
+            $get_user_query = mysqli_query($connection, $query_password);
+            confirm_query($get_user_query);
 
-          //if(!empty($user_password)){
+            $row = mysqli_fetch_array($get_user_query);
+            $db_user_password = $row['user_password'];
+          };
+
+          if($db_user_password != $user_password){
+            $hashed_password = password_hash($user_password, PASSWORD_BCRYPT, array('cost' => 12));
+          };
 
           $query = "UPDATE users SET ";
           $query .= "username = '{$username}', ";
-          //$query .= "user_password = '{$hashed_password}', ";
+          $query .= "user_password = '{$hashed_password}', ";
           $query .= "user_firstname = '{$user_firstname}', ";
           $query .= "user_lastname = '{$user_lastname}', ";
           $query .= "user_email = '{$user_email}', ";
@@ -77,10 +80,12 @@
         <input type="text" class="form-control" name="username" value="<?php echo $username; ?>">
     </div>
 
-    <!-- <div class="form-group">
-        <label class="bg-danger text-danger">Enter Password</label>
+
+<!-- class="bg-danger text-danger" -->
+    <div class="form-group">
+        <label for="user_password">Enter Password</label>
         <input type="password" class="form-control" name="user_password" value="">
-    </div> -->
+    </div>
 
     <div class="form-group">
         <label for="user_firstname">Firstname</label>
