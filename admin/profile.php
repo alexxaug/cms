@@ -28,7 +28,6 @@ if(isset($_POST['update_user_profile'])){
     $user_email = $_POST['user_email'];
     $user_image = $_FILES['image']['name'];
     $user_image_temp = $_FILES['image']['tmp_name'];
-    $user_role = $_POST['user_role'];
 
     move_uploaded_file($user_image_temp, "../images/$user_image");
 
@@ -40,18 +39,41 @@ if(isset($_POST['update_user_profile'])){
         };
     };
 
-    $query = "UPDATE users SET ";
-    $query .= "username = '{$username}', ";
-    $query .= "user_password = '{$user_password}', ";
-    $query .= "user_firstname = '{$user_firstname}', ";
-    $query .= "user_lastname = '{$user_lastname}', ";
-    $query .= "user_email = '{$user_email}', ";
-    $query .= "user_image = '{$user_image}', ";
-    $query .= "user_role = '{$user_role}' ";
-    $query .= "WHERE username = '{$the_username}' ";
+    if(!empty($user_password))   {
 
-    $update_user_profile_query = mysqli_query($connection, $query);
-    confirm_query($update_user_profile_query);
+      $user_password = password_hash($user_password, PASSWORD_BCRYPT, array('cost' => 10));
+
+      $query = "UPDATE users SET ";
+      $query .= "user_firstname = '$user_firstname', ";
+      $query .= "user_lastname = '$user_lastname', ";
+      $query .= "user_role = '$user_role', ";
+      $query .= "username = '$username', ";
+      $query .= "user_email = '$user_email', ";
+      $query .= "user_password = '$user_password' ";
+      $query .= "WHERE username = '{$the_username}'";
+
+      $update_user_profile_query = mysqli_query($connection, $query);
+
+      confirm_query($update_user_profile_query);
+      header("Location: ./users.php");
+
+    } else {
+
+      $query = "UPDATE users SET ";
+      $query .= "user_firstname = '$user_firstname', ";
+      $query .= "user_lastname = '$user_lastname', ";
+      $query .= "user_role = '$user_role', ";
+      $query .= "username = '$username', ";
+      $query .= "user_email = '$user_email' ";
+      $query .= "username = '{$the_username}'";
+
+      $update_user_profile_query = mysqli_query($connection, $query);
+
+      confirm_query($update_user_profile_query);
+      header("Location: ./users.php");
+
+    };
+
 };
 ?>
 
@@ -89,7 +111,7 @@ if(isset($_POST['update_user_profile'])){
 
                             <div class="form-group">
                                 <label>Password</label>
-                                <input type="password" class="form-control" name="user_password" value="<?php echo $user_password; ?>">
+                                <input autocomplete="off" type="password" class="form-control" name="user_password">
                             </div>
 
                             <div class="form-group">
@@ -112,19 +134,6 @@ if(isset($_POST['update_user_profile'])){
                                 <br>
                                 <img width="100" src="../images/<?php echo $user_image; ?>" alt="">
                                 <input type="file" name="image">
-                            </div>
-
-                            <div class="form-group">
-                                <label for="user_role">User Role</label>
-                                <select class="form-control" name="user_role">
-                                    <option><?php echo $user_role; ?></option>
-                                    <?php if($user_role == 'admin'){
-                                      echo "<option value='subscriber'>subscriber</option>";
-                                    } else {
-                                      echo "<option value='admin'>admin</option>";
-                                    };
-                                    ?>
-                                </select>
                             </div>
 
                             <div class="form-group">
