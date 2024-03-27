@@ -22,8 +22,11 @@
         confirm_query($create_user_query);
 
         echo "<div class='bg-success'>
-                User  '{$username}' created with the role of $user_role successfully! " . " <a href='users.php'>View All Users</a>
+                User  '{$username}' created with the role of $user_role successfully!
               </div>";
+
+        echo "<script>setTimeout(\"location.href = './users.php';\",1200);</script>";
+
 
     };
 ?>
