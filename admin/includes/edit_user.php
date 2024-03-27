@@ -42,14 +42,13 @@
 
           confirm_query($update_user_query);
 
-          // echo "<div class='form-group'>
-          //         <p class='text-center bg-success'>
-          //           <script>setTimeout(\"location.href = './users.php';\",1500);</script>
-          //           User Updated.
-          //         </p>
-          //       </div>";
+          echo "<div class='form-group'>
+                  <p class='text-center bg-success'>
+                    User Updated.
+                  </p>
+                </div>";
 
-
+          echo "<script>setTimeout(\"location.href = './users.php';\",1200);</script>";
 
         } else {
 
@@ -64,7 +63,15 @@
           $update_user_query = mysqli_query($connection, $query);
 
           confirm_query($update_user_query);
-          header("Location: ./users.php");
+          // header("Location: ./users.php");
+
+          echo "<div class='form-group'>
+                  <p class='text-center bg-success'>
+                    User Updated.
+                  </p>
+                </div>";
+
+          echo "<script>setTimeout(\"location.href = './users.php';\",1200);</script>";
 
         };
     };
