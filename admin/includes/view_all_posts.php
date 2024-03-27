@@ -34,7 +34,6 @@
           $post_status = $row["post_status"];
           $post_image = $row["post_image"];
           $post_tags = $row["post_tags"];
-          $post_comment_count = $row["post_comment_count"];
           $post_date = $row["post_date"];
           $post_content = $row["post_content"];
         };
@@ -115,7 +114,6 @@
                   $post_status = $row["post_status"];
                   $post_image = $row["post_image"];
                   $post_tags = $row["post_tags"];
-                  $post_comment_count = $row["post_comment_count"];
                   $post_date = $row["post_date"];
                   $post_view_count = $row["post_view_count"];
 
@@ -142,10 +140,15 @@
                   echo "<td>{$post_status}</td>";
                   echo "<td><img width='100' src='../images/$post_image' alt='image'></td>";
                   echo "<td>{$post_tags}</td>";
-                  echo "<td>{$post_comment_count}</td>";
                   echo "<td>{$post_date}</td>";
                   echo "<td><a href='../post.php?p_id={$post_id}'>View Post</a></td>";
-                  echo "<td>{$post_view_count}</td>";
+
+                  $get_comment_count_query = "SELECT * FROM comments WHERE comment_post_id = $post_id ";
+                  $send_comment_count_query = mysqli_query($connection, $get_comment_count_query);
+                  $comment_count = mysqli_num_rows($send_comment_count_query);
+                  echo "<td>{$comment_count}</td>";
+
+
                   echo "<td><a href='posts.php?source=edit_post&p_id={$post_id}'>Edit Post</a></td>";
                   echo "<td><a onClick=\"javascript: return confirm('Are you sure that you would like to delete this post?') \"
                         href='posts.php?delete={$post_id}' >Delete Post</a></td>";
