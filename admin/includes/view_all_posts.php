@@ -140,15 +140,18 @@
                   echo "<td>{$post_status}</td>";
                   echo "<td><img width='100' src='../images/$post_image' alt='image'></td>";
                   echo "<td>{$post_tags}</td>";
+
+                  $get_comments_query = "SELECT * FROM comments WHERE comment_post_id = $post_id ";
+                  $send_comments_query = mysqli_query($connection, $get_comments_query);
+
+                  $row = mysqli_fetch_array($send_comments_query);
+                  $comment_id = isset($row['comment_id']);
+                  $comment_count = mysqli_num_rows($send_comments_query);
+
+                  echo "<td><a href='post_comments.php?id={$post_id}'>{$comment_count}</a></td>";
+
                   echo "<td>{$post_date}</td>";
                   echo "<td><a href='../post.php?p_id={$post_id}'>View Post</a></td>";
-
-                  $get_comment_count_query = "SELECT * FROM comments WHERE comment_post_id = $post_id ";
-                  $send_comment_count_query = mysqli_query($connection, $get_comment_count_query);
-                  $comment_count = mysqli_num_rows($send_comment_count_query);
-                  echo "<td>{$comment_count}</td>";
-
-
                   echo "<td><a href='posts.php?source=edit_post&p_id={$post_id}'>Edit Post</a></td>";
                   echo "<td><a onClick=\"javascript: return confirm('Are you sure that you would like to delete this post?') \"
                         href='posts.php?delete={$post_id}' >Delete Post</a></td>";
