@@ -71,11 +71,11 @@
               if(isset($_POST['create_comment'])){
 
                   $get_post_id = $_GET['p_id'];
-                  $comment_author = $_POST['comment_author'];
-                  $comment_email = $_POST['comment_email'];
+                  $comment_author = $_SESSION['username'];
+                  $comment_email = $_SESSION['user_email'];
                   $comment_content = $_POST['comment_content'];
 
-                      if(!empty($comment_author) && !empty($comment_email) && !empty($comment_content)){
+                      if(!empty($comment_content)){
 
                           $query = "INSERT INTO comments (comment_post_id, comment_author, comment_email, comment_content, comment_status, comment_date) ";
                           $query .= "VALUES ({$get_post_id}, '{$comment_author}', '{$comment_email}', '{$comment_content}', 'Unapproved', now()) ";
@@ -99,22 +99,15 @@
                 <div class="well">
                     <h4>Leave a Comment:</h4>
                     <form action="" method="post" role="form">
-
-                        <div class="form-group">
-                            <label For="Author">Author</label>
-                            <input class="form-control" type="text" name="comment_author"
-                            value="<?php if(isset($_SESSION['username'])){echo $_SESSION['username'];}; ?>">
-                        </div>
-
-                        <div class="form-group">
-                        <label for="Email">Email</label>
-                            <input class="form-control" type="email" name="comment_email" >
-                        </div>
-
                         <div class="form-group">
                             <label for="comment">Your Comment</label>
                             <textarea name="comment_content" class="form-control" rows="3"></textarea>
                         </div>
+                        <h3 class="page-header">
+                          <small>
+                            You are commenting as User: <?php echo $_SESSION['username']; ?>
+                          </small>
+                        </h3>
                         <button type="submit" name="create_comment" class="btn btn-primary">Comment</button>
                     </form>
                 </div>

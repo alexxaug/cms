@@ -42,8 +42,6 @@
                     $post_content = substr($row["post_content"], 0,100);
                     $post_status = $row["post_status"];
 
-                    if ($post_status == 'Published'){ //actually no need for if statement as we are already only retrieving published posts only
-
                     ?>
 
                         <!-- First Blog Post -->
@@ -66,7 +64,7 @@
                             <hr>
 
              <?php
-           };
+
          };
 
 
