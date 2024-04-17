@@ -11,7 +11,9 @@
 
         move_uploaded_file($user_image_temp, "../images/$user_image");
 
-        $user_password = password_hash($password, PASSWORD_BCRYPT, array('cost' => 10));
+        $user_password = password_hash($user_password, PASSWORD_BCRYPT, array('cost' => 10));
+
+        if(!empty($username) && !empty($user_password) && !empty($user_email)){
 
         $query = "INSERT INTO users(username, user_password, user_firstname, user_lastname, user_email, user_image, user_role) ";
         $query .= "VALUES('{$username}', '{$user_password}', '{$user_firstname}', '{$user_lastname}', '{$user_email}',
@@ -27,7 +29,10 @@
 
         echo "<script>setTimeout(\"location.href = './users.php';\",1200);</script>";
 
-
+      } else {
+        echo "<p class='text-center bg-warning'> Fields ('username', 'email' and 'password  ') cannot be empty. </p>";
+        echo "<script>setTimeout(\"location.href = 'users.php?source=add_user';\",2000);</script>";
+      };
     };
 ?>
 
