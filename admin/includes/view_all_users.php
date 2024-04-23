@@ -53,30 +53,18 @@
 <?php
 
   if(isset($_GET['delete'])){
+
+    if(isset($_SESSION['user_role'])){
+      if($_SESSION['user_role'] == 'admin'){
           global $connection;
-          $the_user_id = $_GET['delete'];
+          $the_user_id = mysqli_real_escape_string($connection, $_GET['delete']);
 
           $query = "DELETE FROM users WHERE user_id = {$the_user_id} ";
           $delete_user_query = mysqli_query($connection, $query);
           header("Location: users.php");
+      };
+    };
   };
-
-// if(isset($_GET['delete'])){
-//         global $connection;
-//         $the_user_id = $_GET['delete'];
-//
-//         $database_query_msg = "SELECT * FROM users WHERE user_id = {$the_user_id} ";
-//         $displayMessage_query = mysqli_query($connection, $database_query_msg);
-//
-//         while($row = mysqli_fetch_assoc($displayMessage_query)){
-//             $username = $row['username'];
-//             // $start = microtime();
-//             // sleep(5);
-//             // $end = microtime();
-//             echo "<div> $username's profile has been deleted successfully. </div>";
-//         };
-// };
-
 
 
   if(isset($_GET['change_to_admin'])){
