@@ -89,14 +89,17 @@
   };
 
   if(isset($_GET['delete'])){
-          global $connection;
-          if(isset($_GET['delete'])){
-              $the_comment_id = $_GET['delete'];
 
-              $query = "DELETE FROM comments WHERE comment_id = {$the_comment_id} ";
-              $delete_comment_query = mysqli_query($connection, $query);
-              header("Location: comments.php");
+    if(isset($_SESSION['user_role'])){
+      if($_SESSION['user_role'] == 'admin'){
+        global $connection;
+        $the_comment_id = $_GET['delete'];
+
+        $query = "DELETE FROM comments WHERE comment_id = {$the_comment_id} ";
+        $delete_comment_query = mysqli_query($connection, $query);
+        header("Location: comments.php");
       };
+    };
   };
 
 
