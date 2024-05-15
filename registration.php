@@ -1,6 +1,11 @@
 <?php  include "includes/db.php"; ?>
  <?php  include "includes/header.php"; ?>
  <?php  include "admin/admin_functions.php"; ?>
+ <?php
+ foreach($_POST as $field => $value) {
+   $_POST[$field] = mysqli_real_escape_string($connection, $value);
+ };
+ ?>
 
 <?php
   if(isset($_POST['submit'])){

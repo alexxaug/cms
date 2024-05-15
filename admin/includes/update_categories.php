@@ -1,4 +1,8 @@
-
+<?php
+foreach($_POST as $field => $value) {
+  $_POST[$field] = mysqli_real_escape_string($connection, $value);
+};
+?>
 <form action="" method="post">
     <div class="form-group">
         <label for="cat_title">Edit Category</label>

@@ -2,6 +2,11 @@
 <?php include "includes/header.php" ?>
 <!-- Navigation -->
 <?php include "includes/navigation.php" ?>
+<?php
+foreach($_POST as $field => $value) {
+  $_POST[$field] = mysqli_real_escape_string($connection, $value);
+};
+?>
 
     <!-- Page Content -->
     <div class="container">

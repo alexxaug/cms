@@ -1,5 +1,10 @@
 <?php include "includes/admin_header.php"; ?>
 <?php
+foreach($_POST as $field => $value) {
+  $_POST[$field] = mysqli_real_escape_string($connection, $value);
+};
+?>
+<?php
   if(isset($_SESSION['username'])){
     $the_username = $_SESSION['username'];
 

@@ -1,5 +1,9 @@
 <?php include "includes/admin_header.php"; ?>
-
+<?php
+foreach($_POST as $field => $value) {
+  $_POST[$field] = mysqli_real_escape_string($connection, $value);
+};
+?>
 <body>
 
     <div id="wrapper">

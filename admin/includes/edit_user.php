@@ -1,4 +1,9 @@
 <?php
+foreach($_POST as $field => $value) {
+  $_POST[$field] = mysqli_real_escape_string($connection, $value);
+};
+?>
+<?php
     if(isset($_GET['edit_user'])){
       $the_user_id = $_GET['edit_user'];
 

@@ -1,6 +1,8 @@
 <?php
 
-
+foreach($_POST as $field => $value) {
+  $_POST[$field] = mysqli_real_escape_string($connection, $value);
+};
 
     function confirm_query($result){
         global $connection;
@@ -61,7 +63,7 @@
               $change_category_query = mysqli_query($connection, $change_post_cat_id_query);
 
               echo "<script>setTimeout(\"location.href = 'categories.php';\",1500);</script>";
-            };  
+            };
           };
         };
       };

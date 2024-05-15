@@ -1,4 +1,8 @@
-
+<?php
+foreach($_POST as $field => $value) {
+  $_POST[$field] = mysqli_real_escape_string($connection, $value);
+};
+?>
 <table class="table table-bordered table-hover">
     <thead>
         <tr>

@@ -1,4 +1,9 @@
 <?php
+foreach($_POST as $field => $value) {
+  $_POST[$field] = mysqli_real_escape_string($connection, $value);
+};
+?>
+<?php
 
     if(isset($_GET['p_id'])){
         $the_post_id = $_GET['p_id'];
