@@ -48,20 +48,23 @@
     function deleteCategories(){
         global $connection;
         if(isset($_GET['delete'])){
-            $get_cat_id = $_GET['delete'];
-            $query = "DELETE FROM categories WHERE cat_id = {$get_cat_id} ";
-            $delete_categorie_query = mysqli_query($connection, $query);
+          if(isset($_SESSION['user_role'])){
+            if($_SESSION['user_role'] == 'admin'){
+              $get_cat_id = $_GET['delete'];
+              $query = "DELETE FROM categories WHERE cat_id = {$get_cat_id} ";
+              $delete_categorie_query = mysqli_query($connection, $query);
 
-            echo "<p class='text-center bg-success'> Category deleted. </p>";
+              echo "<p class='text-center bg-success'> Category deleted. </p>";
 
-            //IF CATEGORY DELETED, POSTS IN THAT CATEGORY WILL MOVE TO THE ORPHAN CATEGORY ie Cat ID will change from deleted ID to ORPHANED ID
-            $change_post_cat_id_query = "UPDATE posts SET post_category_id = '1' WHERE post_category_id = {$get_cat_id} ";
-            $change_category_query = mysqli_query($connection, $change_post_cat_id_query);
+              //IF CATEGORY DELETED, POSTS IN THAT CATEGORY WILL MOVE TO THE ORPHAN CATEGORY ie Cat ID will change from deleted ID to ORPHANED ID
+              $change_post_cat_id_query = "UPDATE posts SET post_category_id = '1' WHERE post_category_id = {$get_cat_id} ";
+              $change_category_query = mysqli_query($connection, $change_post_cat_id_query);
 
-            echo "<script>setTimeout(\"location.href = 'categories.php';\",1500);</script>";
-
+              echo "<script>setTimeout(\"location.href = 'categories.php';\",1500);</script>";
+            };  
+          };
         };
-    };
+      };
 
     function deletePost(){
         global $connection;

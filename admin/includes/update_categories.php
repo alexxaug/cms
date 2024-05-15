@@ -5,20 +5,24 @@
 
         <?php
             if(isset($_GET['edit'])){
-                $get_cat_id = $_GET['edit'];
-                $query = "SELECT * FROM categories WHERE cat_id = {$get_cat_id} ";
-                $select_categories_id = mysqli_query($connection, $query);
+              if(isset($_SESSION['user_role'])){
+                if($_SESSION['user_role'] == 'admin'){
+                  $get_cat_id = $_GET['edit'];
+                  $query = "SELECT * FROM categories WHERE cat_id = {$get_cat_id} ";
+                  $select_categories_id = mysqli_query($connection, $query);
 
-                while($row = mysqli_fetch_assoc($select_categories_id)){
-                $cat_id = $row["cat_id"];
-                $cat_title = $row["cat_title"];
+                  while($row = mysqli_fetch_assoc($select_categories_id)){
+                  $cat_id = $row["cat_id"];
+                  $cat_title = $row["cat_title"];
         ?>
 
         <input value="<?php if(isset($cat_title)){echo $cat_title;}; ?>" type="text" class="form-control" name="cat_title">
 
         <?php
+                  };
                 };
-        };
+              };
+            };
         ?>
 
         <?php
@@ -31,7 +35,7 @@
                 if(!$update_query ){
                     die('QUERY FAILED ' . mysqli_error($connection));
                 };
-              
+
             };
         ?>
     </div>
