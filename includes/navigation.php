@@ -18,6 +18,31 @@
 
                     <?php
 
+                    if(isset($_SESSION['username'])){
+                      if($_SESSION['user_role'] == 'admin'){
+                        echo  "<li>
+                                <a href='./admin'>Admin</a>
+                              </li>";
+                        echo "<li>
+                                <a href='includes/logout.php'>Logout</a>
+                              </li>";
+                      } else {
+                        echo "<li>
+                                <a href='includes/logout.php'>Logout</a>
+                              </li>";
+                        // echo "<li>
+                        //         <a href='contact.php'>Contact</a>
+                        //       </li>";
+                      };
+                    } else {
+                      echo "<li>
+                              <a href='registration.php'>Register</a>
+                            </li>";
+                      // echo "<li>
+                      //         <a href='contact.php'>Contact</a>
+                      //       </li>";
+                    };
+
                         $query = "SELECT * FROM categories LIMIT 9 ";
                         $select_all_categories_query = mysqli_query($connection, $query);
 
@@ -28,27 +53,6 @@
                             echo "<li>
                                     <a href='category.php?category=$cat_id'>{$cat_title}</a>
                                   </li>";
-                        };
-
-
-
-                        if(isset($_SESSION['username'])){
-                          if($_SESSION['user_role'] == 'admin'){
-                            echo  "<li>
-                                    <a href='./admin'>Admin</a>
-                                  </li>";
-                            echo "<li>
-                                    <a href='includes/logout.php'>Logout</a>
-                                  </li>";
-                          } else {
-                            echo "<li>
-                                    <a href='includes/logout.php'>Logout</a>
-                                  </li>";
-                          };
-                        } else {
-                          echo "<li>
-                                  <a href='registration.php'>Register</a>
-                                </li>";
                         };
                     ?>
 
