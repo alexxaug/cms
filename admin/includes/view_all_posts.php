@@ -2,6 +2,7 @@
 foreach($_POST as $field => $value) {
   $_POST[$field] = mysqli_real_escape_string($connection, $value);
 };
+include "includes/delete_modal.php";
 ?>
 <?php
   if(isset($_POST["checkBoxArray"])){
@@ -162,8 +163,9 @@ foreach($_POST as $field => $value) {
                   echo "<td>{$post_date}</td>";
                   echo "<td><a href='../post.php?p_id={$post_id}'>View Post</a></td>";
                   echo "<td><a href='posts.php?source=edit_post&p_id={$post_id}'>Edit Post</a></td>";
-                  echo "<td><a onClick=\"javascript: return confirm('Are you sure that you would like to delete this post?') \"
-                        href='posts.php?delete={$post_id}' >Delete Post</a></td>";
+                  // echo "<td><a onClick=\"javascript: return confirm('Are you sure that you would like to delete this post?') \"
+                  //       href='posts.php?delete={$post_id}' >Delete Post</a></td>";
+                  echo "<td><a rel='$post_id' href='javascript:void(0)' class='delete_link'>Delete Post</a></td>";
                   echo "</tr>";
               };
           ?>
@@ -186,3 +188,16 @@ foreach($_POST as $field => $value) {
  };
 
 ?>
+
+<script>
+  $(document).ready(function(){
+      $('.delete_link').on('click', function(){
+        var id = $(this).attr('rel');
+        var delete_url = "posts.php?delete="+ id +" ";
+        $(".modal_delete_link").attr("href", delete_url);
+
+        $("#myModal").modal('show');
+      });
+  });
+
+</script>
