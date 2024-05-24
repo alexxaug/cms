@@ -2,6 +2,7 @@
 foreach($_POST as $field => $value) {
   $_POST[$field] = mysqli_real_escape_string($connection, $value);
 };
+include "includes/delete_modal.php";
 ?>
 <table class="table table-bordered table-hover">
     <thead>
@@ -59,8 +60,9 @@ foreach($_POST as $field => $value) {
                 echo "<td>{$comment_date}</td>";
                 echo "<td><a href='comments.php?approve=$comment_id'>Approve</a></td>";
                 echo "<td><a href='comments.php?unapprove=$comment_id'</a>Unapprove</td>";
-                echo "<td><a onClick=\"javascript: return confirm('Are you sure that you would like to delete this comment?') \"
-                      href='comments.php?delete=$comment_id'>Delete</a></td>";
+                // echo "<td><a onClick=\"javascript: return confirm('Are you sure that you would like to delete this comment?') \"
+                //       href='comments.php?delete=$comment_id'>Delete</a></td>";
+                echo "<td><a rel='$comment_id' href='javascript:void(0)' class='delete_link'>Delete Comment</a></td>";
                 echo "</tr>";
             };
         ?>
@@ -108,3 +110,16 @@ foreach($_POST as $field => $value) {
 
 
 ?>
+
+<script>
+  $(document).ready(function(){
+      $('.delete_link').on('click', function(){
+        var id = $(this).attr('rel');
+        var delete_url = "comments.php?delete="+ id +" ";
+        $(".modal_delete_link").attr("href", delete_url);
+
+        $("#myModal").modal('show');
+      });
+  });
+
+</script>
