@@ -2,6 +2,7 @@
 foreach($_POST as $field => $value) {
   $_POST[$field] = mysqli_real_escape_string($connection, $value);
 };
+include "includes/delete_modal.php";
 ?>
 <table class="table table-bordered table-hover">
     <thead>
@@ -46,8 +47,9 @@ foreach($_POST as $field => $value) {
                 // echo "<td><a href='users.php?change_to_admin=$user_id'>Admin</a></td>";
                 // echo "<td><a href='users.php?change_to_sub=$user_id'>Subscriber</a></td>";
                 echo "<td><a href='users.php?source=edit_user&edit_user=$user_id'>Edit User</a></td>";
-                echo "<td><a onClick=\"javascript: return confirm('Are you sure that you would like to delete this user?') \"
-                      href='users.php?delete=$user_id'>Delete</a></td>";
+                echo "<td><a rel='$user_id' href='javascript:void(0)' class='delete_link'>Delete User</a></td>";
+                // echo "<td><a onClick=\"javascript: return confirm('Are you sure that you would like to delete this user?') \"
+                //       href='users.php?delete=$user_id'>Delete</a></td>";
                 echo "</tr>";
              };
         ?>
@@ -93,3 +95,15 @@ foreach($_POST as $field => $value) {
       };
   };
 ?>
+<script>
+  $(document).ready(function(){
+      $('.delete_link').on('click', function(){
+        var id = $(this).attr('rel');
+        var delete_url = "users.php?delete="+ id +" ";
+        $(".modal_delete_link").attr("href", delete_url);
+
+        $("#myModal").modal('show');
+      });
+  });
+
+</script>
