@@ -24,7 +24,7 @@
 
                 };
 
-                $count_posts_query = "SELECT * FROM posts ";
+                $count_posts_query = "SELECT * FROM posts WHERE post_status = 'published' ";
                 $find_count = mysqli_query($connection, $count_posts_query);
                 $posts_count = mysqli_num_rows($find_count);
 
@@ -41,7 +41,7 @@
                     $post_image = $row["post_image"];
                     $post_content = substr($row["post_content"], 0,100);
                     $post_status = $row["post_status"];
-
+                    $post_comment_count = $row["post_comment_count"];
                     ?>
 
                         <!-- First Blog Post -->
@@ -60,14 +60,17 @@
                             <hr>
                             <p><?php echo $post_content ?></p>
                             <a class="btn btn-primary" href="post.php?p_id=<?php echo $post_id; ?>">Read more <span class="glyphicon glyphicon-chevron-right"></span> </a>
+                            <!-- <p>Comment Count:
+                              <?php
+                              //  echo $post_comment_count;
+                              ?>
+                            </p> -->
 
                             <hr>
 
              <?php
 
          };
-
-
 
          if(mysqli_num_rows($select_all_posts_query)==0){
              echo "<h1 class='text-center'>There are no published posts!</h1>";
@@ -98,7 +101,6 @@
 
               ?>
           </ul>
-
 
         <!-- Footer -->
         <?php include "includes/footer.php" ?>

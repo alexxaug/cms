@@ -1,8 +1,6 @@
 <?php
 
-foreach($_POST as $field => $value) {
-  $_POST[$field] = mysqli_real_escape_string($connection, $value);
-};
+
 
     function confirm_query($result){
         global $connection;
