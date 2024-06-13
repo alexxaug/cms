@@ -16,8 +16,19 @@
                     $get_category_id = $_GET['category'];
                 };
 
-                $query = "SELECT * FROM posts WHERE post_category_id = $get_category_id AND post_status = 'Published' ";
+                if(isset($_SESSION['user_role']) && $_SESSION['user_role'] == 'admin'){
+                    $query = "SELECT * FROM posts WHERE post_category_id = $get_category_id ";
+                } else {
+                    $query = "SELECT * FROM posts WHERE post_category_id = $get_category_id AND post_status = 'Published' ";
+                };
+
+
                 $select_all_categories_query = mysqli_query($connection, $query);
+
+                if(mysqli_num_rows($select_all_categories_query)==0){
+                    echo "<h1 class='text-center'>There are no published posts in this category.</h1>";
+                } else {
+
                 while($row = mysqli_fetch_assoc($select_all_categories_query)){
                     $post_id = $row["post_id"];
                     $post_title = $row["post_title"];
@@ -28,12 +39,9 @@
 
                     ?>
 
-                    <!-- <h1 class="page-header">
-                                Page Heading
-                                <small>Secondary Text</small>
-                    </h1> -->
 
-                      <!-- First Blog Post -->
+
+
                             <h2>
                                 <a href="post.php?p_id=<?php echo $post_id; ?>"><?php echo $post_title ?></a>
                             </h2>
@@ -51,10 +59,7 @@
 
               <?php
                 };
-
-                if(mysqli_num_rows($select_all_categories_query)==0){
-                    echo "<h1 class='text-center'>There are no published posts in this category.</h1>";
-                };
+                  };
               ?>
 
             </div>
