@@ -19,10 +19,22 @@
                     $view_query = "UPDATE posts SET post_view_count = post_view_count + 1 WHERE post_id = $get_post_id ";
                     $send_view_query = mysqli_query($connection, $view_query);
 
+                    if(!$send_view_query){
+                      die("Query failed!");
+                    };
 
+                if(isset($_SESSION['user_role']) && $_SESSION['user_role'] == 'admin'){
+                    $query = "SELECT * FROM posts WHERE post_id = $get_post_id ";
+                } else {
+                    $query = "SELECT * FROM posts WHERE post_id = $get_post_id AND post_status = 'published' ";
+                };
 
-                $query = "SELECT * FROM posts WHERE post_id = $get_post_id ";
                 $select_all_posts_query = mysqli_query($connection, $query);
+
+                if(mysqli_num_rows($select_all_posts_query)==0){
+                    echo "<h1 class='text-center'>The post you are trying to view is unavailable.</h1>";
+                } else {
+
                 while($row = mysqli_fetch_assoc($select_all_posts_query)){
                     $post_title = $row["post_title"];
                     $post_author = $row["post_author"];
@@ -56,65 +68,20 @@
 
                 <?php
                 };
-              } else {
-
-                header("Location: index.php");
-
-              };
-
 
                 ?>
 
             <!-- Blog Comments -->
 
-            <?php
-              if(isset($_POST['create_comment'])){
 
-                  $get_post_id = $_GET['p_id'];
-                  $comment_author = $_SESSION['username'];
-                  $comment_email = $_SESSION['user_email'];
-                  $comment_content = $_POST['comment_content'];
-
-                      if(!empty($comment_content)){
-
-                          $query = "INSERT INTO comments (comment_post_id, comment_author, comment_email, comment_content, comment_status, comment_date) ";
-                          $query .= "VALUES ({$get_post_id}, '{$comment_author}', '{$comment_email}', '{$comment_content}', 'Unapproved', now()) ";
-
-                          $create_comment_query = mysqli_query($connection, $query);
-                          if(!$create_comment_query){
-                              die("Query Failed!" . mysqli_error($connection));
-                          };
-                      } else {
-                                echo "<script>
-                                  alert('Fields cannot be empty')
-                                  </script>";
-                      };
-
-              }; // end of if isset check
-
-
-            ?>
-
-                <!-- Comments Form -->
-                <div class="well">
-                    <h4>Leave a Comment:</h4>
-                    <form action="" method="post" role="form">
-                        <div class="form-group">
-                            <label for="comment">Your Comment</label>
-                            <textarea name="comment_content" class="form-control" rows="3"></textarea>
-                        </div>
-                        <h3 class="page-header">
-                          <small>
-                            You are commenting as User: <?php echo $_SESSION['username']; ?>
-                          </small>
-                        </h3>
-                        <button type="submit" name="create_comment" class="btn btn-primary">Comment</button>
-                    </form>
-                </div>
 
                 <hr>
 
                 <!-- Posted Comments -->
+
+                <div class="media-body">
+                    <h3 class="media-heading text-muted"><u>Comments</u></h3>
+                </div>
 
                 <?php
 
@@ -150,6 +117,60 @@
 
                   <?php
                     };
+                  ?>
+
+                  <?php
+                    if(isset($_POST['create_comment'])){
+
+                        $get_post_id = $_GET['p_id'];
+                        $comment_author = $_SESSION['username'];
+                        $comment_email = $_SESSION['user_email'];
+                        $comment_content = $_POST['comment_content'];
+
+                            if(!empty($comment_content)){
+
+                                $query = "INSERT INTO comments (comment_post_id, comment_author, comment_email, comment_content, comment_status, comment_date) ";
+                                $query .= "VALUES ({$get_post_id}, '{$comment_author}', '{$comment_email}', '{$comment_content}', 'Unapproved', now()) ";
+
+                                $create_comment_query = mysqli_query($connection, $query);
+                                if(!$create_comment_query){
+                                    die("Query Failed!" . mysqli_error($connection));
+                                };
+                            } else {
+                                      echo "<script>
+                                        alert('Fields cannot be empty')
+                                        </script>";
+                            };
+
+                    }; // end of if isset check
+
+
+                  ?>
+
+                      <!-- Comments Form -->
+                      <hr>
+                      <div class="well">
+                          <h4>Leave a Comment:</h4>
+                          <form action="" method="post" role="form">
+                              <div class="form-group">
+                                  <label for="comment">Your Comment</label>
+                                  <textarea name="comment_content" class="form-control" rows="3"></textarea>
+                              </div>
+                              <h3 class="page-header">
+                                <small>
+                                  You are commenting as User: <?php echo $_SESSION['username']; ?>
+                                </small>
+                              </h3>
+                              <button type="submit" name="create_comment" class="btn btn-primary">Comment</button>
+                          </form>
+                      </div>
+
+                  <?php
+
+                  }
+                } else {
+                    header("Location: index.php");
+                  };
                   ?>
 
             </div>
