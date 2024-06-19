@@ -18,31 +18,6 @@
 
                     <?php
 
-                    if(isset($_SESSION['username'])){
-                      if($_SESSION['user_role'] == 'admin'){
-                        echo  "<li>
-                                <a href='./admin'>Admin</a>
-                              </li>";
-                        echo "<li>
-                                <a href='includes/logout.php'>Logout</a>
-                              </li>";
-                      } else {
-                        echo "<li>
-                                <a href='includes/logout.php'>Logout</a>
-                              </li>";
-                        // echo "<li>
-                        //         <a href='contact.php'>Contact</a>
-                        //       </li>";
-                      };
-                    } else {
-                      echo "<li>
-                              <a href='registration.php'>Register</a>
-                            </li>";
-                      // echo "<li>
-                      //         <a href='contact.php'>Contact</a>
-                      //       </li>";
-                    };
-
                         $query = "SELECT * FROM categories LIMIT 9 ";
                         $select_all_categories_query = mysqli_query($connection, $query);
 
@@ -50,17 +25,43 @@
                             $cat_title = $row["cat_title"];
                             $cat_id = $row["cat_id"];
 
-                            echo "<li>
+                            $category_class = '';
+
+                            $page_name = basename($_SERVER['PHP_SELF']);
+
+                            if(isset($_GET['category']) && $_GET['category'] == $cat_id){
+                              $category_class = 'active';
+                            };
+
+                            echo "<li class='$category_class'>
                                     <a href='category.php?category=$cat_id'>{$cat_title}</a>
                                   </li>";
                         };
-                    ?>
 
 
-
-
-
-                    <?php
+                        if(isset($_SESSION['username'])){
+                          if($_SESSION['user_role'] == 'admin'){
+                            echo  "<li>
+                              <a href='./admin'>Admin</a>
+                            </li>";
+                            echo "<li>
+                              <a href='includes/logout.php'>Logout</a>
+                            </li>";
+                          } else {
+                            echo "<li>
+                              <a href='includes/logout.php'>Logout</a>
+                            </li>";
+                          };
+                        } else {
+                          $registration = 'registration.php';
+                          $registration_class ='';
+                          if ($page_name == $registration){
+                            $registration_class = "active";
+                          };
+                          echo "<li class='$registration_class'>
+                            <a href='registration.php'>Register</a>
+                          </li>";
+                        };
 
                     if(isset($_SESSION['user_role'])){
                       if($_SESSION['user_role'] == 'admin'){
