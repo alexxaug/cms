@@ -44,13 +44,6 @@
                             echo  "<li>
                               <a href='./admin'>Admin</a>
                             </li>";
-                            echo "<li>
-                              <a href='includes/logout.php'>Logout</a>
-                            </li>";
-                          } else {
-                            echo "<li>
-                              <a href='includes/logout.php'>Logout</a>
-                            </li>";
                           };
                         } else {
                           $registration = 'registration.php';
