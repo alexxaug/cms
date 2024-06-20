@@ -112,7 +112,7 @@
                                  <i class="fa fa-list fa-5x"></i>
                              </div>
                              <div class="col-xs-9 text-right">
-                               <div class='huge'><?php echo $category_count = recordCount('categories'); ?></div>                               
+                               <div class='huge'><?php echo $category_count = recordCount('categories'); ?></div>
                                   <div>Categories</div>
                              </div>
                          </div>
@@ -135,30 +135,22 @@
                 <!-- start of google graph code -->
 
                 <?php
-                 $query = "SELECT * FROM posts WHERE post_status = 'Draft' ";
-                 $select_all_draft_posts = mysqli_query($connection, $query);
-                 $draft_post_count = mysqli_num_rows($select_all_draft_posts);
 
-                 $query = "SELECT * FROM posts WHERE post_status = 'Published' ";
-                 $select_all_published_posts = mysqli_query($connection, $query);
-                 $published_post_count = mysqli_num_rows($select_all_published_posts);
+                $draft_post_count = checkStatus('posts', 'post_status', 'Draft');
 
-                 $query = "SELECT * FROM users WHERE user_role = 'admin' ";
-                 $select_all_admin_users = mysqli_query($connection, $query);
-                 $admin_count = mysqli_num_rows($select_all_admin_users);
+                 $published_post_count = checkStatus('posts', 'post_status', 'Published');
 
-                 $query = "SELECT * FROM users WHERE user_role = 'subscriber' ";
-                 $select_all_subscriber_users = mysqli_query($connection, $query);
-                 $subscriber_count = mysqli_num_rows($select_all_subscriber_users);
+                 $admin_count = checkStatus('users', 'user_role', 'admin');
 
-                 $query = "SELECT * FROM comments WHERE comment_status = 'Approved' ";
-                 $select_all_approved_comments = mysqli_query($connection, $query);
-                 $approved_comment_count = mysqli_num_rows($select_all_approved_comments);
+                 $subscriber_count = checkStatus('users', 'user_role', 'subscriber');
 
-                 $query = "SELECT * FROM comments WHERE comment_status = 'Unapproved' ";
-                 $select_all_unapproved_comments = mysqli_query($connection, $query);
-                 $unapproved_comment_count = mysqli_num_rows($select_all_unapproved_comments);
+                 $approved_comment_count = checkStatus('comments', 'comment_status', 'Approved');
+
+                 $unapproved_comment_count = checkStatus('comments', 'comment_status', 'Unapproved');
+
                 ?>
+
+
 
                 <div class="row">
 

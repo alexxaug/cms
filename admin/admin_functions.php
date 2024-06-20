@@ -100,6 +100,14 @@
       return $result;
     };
 
+    function checkStatus($table, $column, $status){
+      global $connection;
+      $query = "SELECT * FROM $table WHERE $column = '$status' ";
+      $result = mysqli_query($connection, $query);
+      confirm_query($result);
+      return mysqli_num_rows($result);
+  };
+
     function users_online(){
 
       if(isset($_GET['onlineusers'])){
