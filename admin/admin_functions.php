@@ -108,6 +108,14 @@
       return mysqli_num_rows($result);
   };
 
+    function post_comment_count($table, $column, $post_id){
+      global $connection;
+      $query = "SELECT * FROM $table WHERE $column = $post_id ";
+      $result = mysqli_query($connection, $query);
+      confirm_query($result);
+      return mysqli_num_rows($result);
+    };
+
     function users_online(){
 
       if(isset($_GET['onlineusers'])){

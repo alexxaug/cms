@@ -144,14 +144,7 @@ include "includes/delete_modal.php";
                   echo "<td>{$post_status}</td>";
                   echo "<td><img width='100' src='../images/$post_image' alt='image'></td>";
                   echo "<td>{$post_tags}</td>";
-
-                  $get_comments_query = "SELECT * FROM comments WHERE comment_post_id = $post_id ";
-                  $send_comments_query = mysqli_query($connection, $get_comments_query);
-
-                  $row = mysqli_fetch_array($send_comments_query);
-                  $comment_id = isset($row['comment_id']);
-                  $comment_count = mysqli_num_rows($send_comments_query);
-
+                  $comment_count = post_comment_count('comments', 'comment_post_id', $post_id);
                   echo "<td><a href='post_comments.php?id={$post_id}'>{$comment_count}</a></td>";
 
                   echo "<td>{$post_date}</td>";
