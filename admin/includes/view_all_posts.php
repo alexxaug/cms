@@ -103,7 +103,7 @@ include "includes/delete_modal.php";
               <th>Tags</th>
               <th>Comments</th>
               <th>Date</th>
-              <!-- <th>Post View Count</th> -->
+              <th>Post View Count</th>
               <th>View Post</th>
               <th>Edit</th>
               <th>Delete</th>
@@ -111,7 +111,11 @@ include "includes/delete_modal.php";
       </thead>
       <tbody>
           <?php
-              $query = "SELECT * FROM posts ";
+
+              $query = "SELECT posts.post_id, posts.post_author, posts.post_title, posts.post_category_id, posts.post_status, posts.post_image, posts.post_tags, posts.post_date, ";
+              $query .= "posts.post_comment_count, posts.post_view_count, categories.cat_id, categories.cat_title ";
+              $query .= "FROM posts LEFT JOIN categories ON posts.post_category_id = categories.cat_id ";
+
               $select_posts = mysqli_query($connection, $query);
               while($row = mysqli_fetch_assoc($select_posts)){
                   $post_id = $row["post_id"];
@@ -122,7 +126,10 @@ include "includes/delete_modal.php";
                   $post_image = $row["post_image"];
                   $post_tags = $row["post_tags"];
                   $post_date = $row["post_date"];
-                  // $post_view_count = $row["post_view_count"];
+                  $post_comment_count = $row["post_comment_count"];
+                  $post_view_count = $row["post_view_count"];
+                  $cat_id = $row["cat_id"];
+                  $cat_title = $row["cat_title"];
 
                   echo "<tr>";
                   ?>
@@ -133,17 +140,7 @@ include "includes/delete_modal.php";
                   echo "<td>{$post_id}</td>";
                   echo "<td>{$post_author}</td>";
                   echo "<td>{$post_title}</td>";
-
-                  $query = "SELECT * FROM categories WHERE cat_id = {$post_category_id} ";
-                  $select_categories_id = mysqli_query($connection, $query);
-
-                  while($row = mysqli_fetch_assoc($select_categories_id)){
-                  $cat_id = $row["cat_id"];
-                  $cat_title = $row["cat_title"];
-
                   echo "<td>{$cat_title}</td>";
-                  };
-
                   echo "<td>{$post_status}</td>";
                   echo "<td><img width='100' src='../images/$post_image' alt='image'></td>";
                   echo "<td>{$post_tags}</td>";
@@ -158,6 +155,7 @@ include "includes/delete_modal.php";
                   echo "<td><a href='post_comments.php?id={$post_id}'>{$comment_count}</a></td>";
 
                   echo "<td>{$post_date}</td>";
+                  echo "<td>{$post_view_count}</td>";
                   echo "<td><a href='../post.php?p_id={$post_id}'>View Post</a></td>";
                   echo "<td><a href='posts.php?source=edit_post&p_id={$post_id}'>Edit Post</a></td>";
                   echo "<td><a rel='$post_id' href='javascript:void(0)' class='delete_link'>Delete Post</a></td>";

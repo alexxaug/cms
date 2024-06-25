@@ -100,7 +100,7 @@
       return $result;
     };
 
-    function checkStatus($table, $column, $status){
+    function checkStatusCount($table, $column, $status){
       global $connection;
       $query = "SELECT * FROM $table WHERE $column = '$status' ";
       $result = mysqli_query($connection, $query);

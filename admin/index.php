@@ -136,17 +136,17 @@
 
                 <?php
 
-                $draft_post_count = checkStatus('posts', 'post_status', 'Draft');
+                 $draft_post_count = checkStatusCount('posts', 'post_status', 'Draft');
 
-                 $published_post_count = checkStatus('posts', 'post_status', 'Published');
+                 $published_post_count = checkStatusCount('posts', 'post_status', 'Published');
 
-                 $admin_count = checkStatus('users', 'user_role', 'admin');
+                 $admin_count = checkStatusCount('users', 'user_role', 'admin');
 
-                 $subscriber_count = checkStatus('users', 'user_role', 'subscriber');
+                 $subscriber_count = checkStatusCount('users', 'user_role', 'subscriber');
 
-                 $approved_comment_count = checkStatus('comments', 'comment_status', 'Approved');
+                 $approved_comment_count = checkStatusCount('comments', 'comment_status', 'Approved');
 
-                 $unapproved_comment_count = checkStatus('comments', 'comment_status', 'Unapproved');
+                 $unapproved_comment_count = checkStatusCount('comments', 'comment_status', 'Unapproved');
 
                 ?>
 
