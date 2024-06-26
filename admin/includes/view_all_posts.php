@@ -114,7 +114,7 @@ include "includes/delete_modal.php";
 
               $query = "SELECT posts.post_id, posts.post_author, posts.post_title, posts.post_category_id, posts.post_status, posts.post_image, posts.post_tags, posts.post_date, ";
               $query .= "posts.post_comment_count, posts.post_view_count, categories.cat_id, categories.cat_title ";
-              $query .= "FROM posts LEFT JOIN categories ON posts.post_category_id = categories.cat_id ";
+              $query .= "FROM posts LEFT JOIN categories ON posts.post_category_id = categories.cat_id ORDER BY posts.post_date DESC ";
 
               $select_posts = mysqli_query($connection, $query);
               while($row = mysqli_fetch_assoc($select_posts)){

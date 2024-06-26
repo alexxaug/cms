@@ -9,6 +9,19 @@
         };
     };
 
+    function isAdmin($username = ''){
+      global $connection;
+      $query = "SELECT user_role FROM users WHERE username = '$username' ";
+      $result = mysqli_query($connection, $query);
+      confirm_query($result);
+      $row = mysqli_fetch_array($result);
+      if($row['user_role'] == 'admin'){
+        return true;
+      } else {
+        return false;
+      };
+    };
+
     function insert_categories(){
         global $connection;
         if(isset($_POST['submit'])){
