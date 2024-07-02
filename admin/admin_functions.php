@@ -130,6 +130,19 @@
       return mysqli_num_rows($result);
     };
 
+    function usernameExists($username){
+      global $connection;
+      $query = "SELECT username FROM users WHERE username = '$username' ";
+      $result = mysqli_query($connection, $query);
+      confirm_query($result);
+
+      if(mysqli_num_rows($result)>0){
+        return true;
+      }else{
+        return false;
+      };
+    };
+
     function users_online(){
 
       if(isset($_GET['onlineusers'])){
