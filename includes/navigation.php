@@ -40,11 +40,11 @@
 
 
                         if(isset($_SESSION['username'])){
-                          if($_SESSION['user_role'] == 'admin'){
+                          //if($_SESSION['user_role'] == 'admin'){
                             echo  "<li>
                               <a href='./admin'>Admin</a>
                             </li>";
-                          };
+                          //};
                         } else {
                           $registration = 'registration.php';
                           $registration_class ='';

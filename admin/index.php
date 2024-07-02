@@ -33,7 +33,7 @@
 
                 <!-- inserting the admin widgets code -->
 
-
+<?php if(isAdmin($_SESSION['username'])){?>
 
                          <!-- /.row -->
 
@@ -194,7 +194,7 @@
 
             <!-- commenting out end of google graph code -->
 
-
+          <?php }; ?>
 
 
 

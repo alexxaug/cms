@@ -9,6 +9,7 @@
         };
     };
 
+
     function isAdmin($username = ''){
       global $connection;
       $query = "SELECT user_role FROM users WHERE username = '$username' ";
