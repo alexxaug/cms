@@ -18,7 +18,7 @@
 
     if(!empty($username) && !empty($password) && !empty($email)){
 
-      if(!usernameExists($username)){
+      if(!usernameExists($username) && !emailExists($email)){
 
       $username = mysqli_real_escape_string($connection, $username);
       $email = mysqli_real_escape_string($connection, $email);
@@ -36,7 +36,7 @@
       echo "<p class='text-center bg-success'> User registered. </p>";
       echo "<script>setTimeout(\"location.href = 'index.php';\",1500);</script>";
     } else {
-      echo "<p class='text-center bg-warning'>That username exists. Please choose an alternative.</p>";
+      echo "<p class='text-center bg-warning'>That username and/ or email exists. Please choose an alternative or login.</p>";
     };
     } else {
       echo "<p class='text-center bg-warning'> Fields ('username', 'email' and 'password  ') cannot be empty. </p>";
