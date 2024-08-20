@@ -23,6 +23,41 @@
       };
     };
 
+    function redirect($location){
+      return header("Location:" . $location);
+    };
+
+    function registerUser($username, $email, $password, $firstname, $lastname){
+      global $connection;
+      if(!empty($username) && !empty($password) && !empty($email)){
+
+        if(!usernameExists($username) && !emailExists($email)){
+
+        $username = mysqli_real_escape_string($connection, $username);
+        $email = mysqli_real_escape_string($connection, $email);
+        $password = mysqli_real_escape_string($connection, $password);
+
+        $password = password_hash($password, PASSWORD_BCRYPT, array('cost' => 12));
+
+        $query = "INSERT INTO users(username, user_password, user_email, user_role, user_firstname, user_lastname) ";
+        $query.= "VALUES('{$username}', '{$password}', '{$email}', 'subscriber', '{$firstname}', '{$lastname}') ";
+
+        $register_user_query = mysqli_query($connection, $query);
+
+        confirm_query($register_user_query);
+
+        echo "<p class='text-center bg-success'> User registered. </p>";
+        echo "<script>setTimeout(\"location.href = 'index.php';\",1500);</script>";
+      } else {
+        echo "<p class='text-center bg-warning'>That username and/ or email exists. Please choose an alternative or login.</p>";
+      };
+      } else {
+        echo "<p class='text-center bg-warning'> Fields ('username', 'email' and 'password  ') cannot be empty. </p>";
+        echo "<script>setTimeout(\"location.href = 'registration.php';\",2000);</script>";
+      };
+
+    };
+
     function insert_categories(){
         global $connection;
         if(isset($_POST['submit'])){
@@ -145,7 +180,7 @@
 
     function EmailExists($email){
       global $connection;
-      $query = "SELECT username FROM users WHERE user_email = '$email' ";
+      $query = "SELECT user_email FROM users WHERE user_email = '$email' ";
       $result = mysqli_query($connection, $query);
       confirm_query($result);
 

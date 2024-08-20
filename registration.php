@@ -10,38 +10,43 @@
 <?php
   if(isset($_POST['submit'])){
 
-    $username = $_POST['username'];
-    $email = $_POST['email'];
-    $password = $_POST['password'];
-    $firstname = $_POST['firstname'];
-    $lastname = $_POST['lastname'];
+    $username = trim($_POST['username']);
+    $email = trim($_POST['email']);
+    $password = trim($_POST['password']);
+    $firstname = trim($_POST['firstname']);
+    $lastname = trim($_POST['lastname']);
 
-    if(!empty($username) && !empty($password) && !empty($email)){
+    $error = [
+      'username' => '',
+      'email' => '',
+      'password' => ''
+    ];
 
-      if(!usernameExists($username) && !emailExists($email)){
-
-      $username = mysqli_real_escape_string($connection, $username);
-      $email = mysqli_real_escape_string($connection, $email);
-      $password = mysqli_real_escape_string($connection, $password);
-
-      $password = password_hash($password, PASSWORD_BCRYPT, array('cost' => 12));
-
-      $query = "INSERT INTO users(username, user_password, user_email, user_role, user_firstname, user_lastname) ";
-      $query.= "VALUES('{$username}', '{$password}', '{$email}', 'subscriber', '{$firstname}', '{$lastname}') ";
-
-      $register_user_query = mysqli_query($connection, $query);
-
-      confirm_query($register_user_query);
-
-      echo "<p class='text-center bg-success'> User registered. </p>";
-      echo "<script>setTimeout(\"location.href = 'index.php';\",1500);</script>";
-    } else {
-      echo "<p class='text-center bg-warning'>That username and/ or email exists. Please choose an alternative or login.</p>";
+    if(strlen($username) < 4){
+      $error['username'] = 'Username must be longer than 4 characters';
     };
-    } else {
-      echo "<p class='text-center bg-warning'> Fields ('username', 'email' and 'password  ') cannot be empty. </p>";
-      echo "<script>setTimeout(\"location.href = 'registration.php';\",2000);</script>";
+
+    if($username = ''){
+      $error['username'] = 'Username cannot be empty';
     };
+
+    if(usernameExists($username)){
+      $error['username'] = 'Username already exists';
+    };
+
+    if($email = ''){
+      $error['email'] = 'Email cannot be empty';
+    };
+
+    if(EmailExists($email)){
+      $error['email'] = 'Email already exists, <a href="index.php">Please login</a>';
+    };
+
+    if($password = ''){
+      $error['password'] = 'Password cannot be empty';
+    };
+
+    registerUser($username, $email, $password, $firstname, $lastname);
 
   };
 
