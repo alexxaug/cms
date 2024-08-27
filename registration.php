@@ -8,7 +8,7 @@
  ?>
 
 <?php
-  if(isset($_POST['submit'])){
+  if(isset($_POST['submit'])){ // start of submit
 
     $username = trim($_POST['username']);
     $email = trim($_POST['email']);
@@ -46,9 +46,13 @@
       $error['password'] = 'Password cannot be empty';
     };
 
-    registerUser($username, $email, $password, $firstname, $lastname);
-
-  };
+    foreach($error as $key => $value){ // start of foreach
+      if(empty($value)){
+        registerUser($username, $email, $password, $firstname, $lastname);
+        loginUser($username, $password);
+      };
+    }; //for each
+  }; // end of submit
 
 ?>
 
