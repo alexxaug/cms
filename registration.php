@@ -17,16 +17,16 @@
     $lastname = trim($_POST['lastname']);
 
     $error = [
-      'username' => '',
-      'email' => '',
-      'password' => ''
+      'username'=> '',
+      'email'=> '',
+      'password'=> ''
     ];
 
     if(strlen($username) < 4){
       $error['username'] = 'Username must be longer than 4 characters';
     };
 
-    if($username = ''){
+    if($username == ''){
       $error['username'] = 'Username cannot be empty';
     };
 
@@ -42,14 +42,14 @@
       $error['email'] = 'Email already exists, <a href="index.php">Please login</a>';
     };
 
-    if($password = ''){
+    if($password == ''){
       $error['password'] = 'Password cannot be empty';
     };
 
     foreach($error as $key => $value){ // start of foreach
       if(empty($value)){
         registerUser($username, $email, $password, $firstname, $lastname);
-        loginUser($username, $password);
+        //loginUser($username, $password);
       };
     }; //for each
   }; // end of submit
@@ -77,11 +77,11 @@
                         </div>
                         <div class="form-group">
                             <label for="firstname" class="sr-only">Firstname</label>
-                            <input type="text" name="firstname" id="firstname" class="form-control" placeholder="Enter Firstname - optional">
+                            <input type="text" name="firstname" id="firstname" class="form-control" placeholder="Enter Firstname">
                         </div>
                         <div class="form-group">
                             <label for="lastname" class="sr-only">Lastname</label>
-                            <input type="text" name="lastname" id="lastname" class="form-control" placeholder="Enter Lastname - optional">
+                            <input type="text" name="lastname" id="lastname" class="form-control" placeholder="Enter Lastname">
                         </div>
                          <div class="form-group">
                             <label for="email" class="sr-only">Email</label>

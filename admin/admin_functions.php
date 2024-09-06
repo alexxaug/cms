@@ -27,39 +27,114 @@
       return header("Location:" . $location);
     };
 
+    // function registerUser($username, $email, $password, $firstname, $lastname){
+    //   global $connection;
+    //   //if(!empty($username) && !empty($password) && !empty($email)){
+    //
+    //     //if(!usernameExists($username) && !emailExists($email)){
+    //
+    //     // $username = mysqli_real_escape_string($connection, $username);
+    //     // $email = mysqli_real_escape_string($connection, $email);
+    //     // $password = mysqli_real_escape_string($connection, $password);
+    //
+    //     $password = password_hash($password, PASSWORD_BCRYPT, array('cost' => 12));
+    //
+    //     $query = "INSERT INTO users(username, user_password, user_email, user_role, user_firstname, user_lastname) ";
+    //     $query.= "VALUES('{$username}', '{$password}', '{$email}', 'subscriber', '{$firstname}', '{$lastname}') ";
+    //
+    //     $register_user_query = mysqli_query($connection, $query);
+    //
+    //     confirm_query($register_user_query);
+
+      //   echo "<p class='text-center bg-success'> User registered. </p>";
+      //   echo "<script>setTimeout(\"location.href = 'index.php';\",1500);</script>";
+      // } else {
+      //   echo "<p class='text-center bg-warning'>That username and/ or email exists. Please choose an alternative or login.</p>";
+      // };
+      // } else {
+      //   echo "<p class='text-center bg-warning'> Fields ('username', 'email' and 'password  ') cannot be empty. </p>";
+      //   echo "<script>setTimeout(\"location.href = 'registration.php';\",2000);</script>";
+      // };
+
+      //};
+
     function registerUser($username, $email, $password, $firstname, $lastname){
       global $connection;
-      if(!empty($username) && !empty($password) && !empty($email)){
 
-        if(!usernameExists($username) && !emailExists($email)){
+      $form_errors = array();
 
-        $username = mysqli_real_escape_string($connection, $username);
-        $email = mysqli_real_escape_string($connection, $email);
-        $password = mysqli_real_escape_string($connection, $password);
+      if($username == ''){
+        $form_errors[] = '$ERROR! - Empty field detected. Please go back and fill out the username field.*';
+      } else if (usernameExists($username)){
+        $form_errors[] = '$ERROR! - Sorry this username is currently taken.*';
+      } else if (strlen($username) < 4){
+        $form_errors[] = '$ERROR! - The username must be at least 4 characters long.*';
+      } else {
+        $reg_username = $username;
+      };
 
-        $password = password_hash($password, PASSWORD_BCRYPT, array('cost' => 12));
+      if($firstname == ''){
+        $form_errors[] = '$ERROR! - Empty field detected. Please go back and fill out the first name field.*';
+      } else {
+        $reg_firstname = $firstname;
+      };
 
-        $query = "INSERT INTO users(username, user_password, user_email, user_role, user_firstname, user_lastname) ";
-        $query.= "VALUES('{$username}', '{$password}', '{$email}', 'subscriber', '{$firstname}', '{$lastname}') ";
+      if($lastname == ''){
+        $form_errors[] = '$ERROR! - Empty field detected. Please go back and fill out the last name field.*';
+      } else {
+        $reg_lastname = $lastname;
+      };
 
+      if($email == ''){
+        $form_errors[] = '$ERROR! - Empty field detected. Please go back and fill out the email field.*';
+      } else if (emailExists($email)){
+        $form_errors[] = '$ERROR! - Sorry there is already an account with this email address. <a href="index.php">Plese login</a>*';
+      } else {
+        $reg_email = $email;
+      };
+
+      if($password = ''){
+        $form_errors[] = '$ERROR! - Empty field detected. Please go back and fill out the password field.*';
+      } else if (strlen($password) < 6){
+        $form_errors[] = '$ERROR! - Password must be at least 6 characters long.*';
+      } else {
+        $reg_password = $password;
+      };
+
+      if(!empty($form_errors)){
+        $form_msg = '<div class="form_msgs"><h4>The following errors ocurred:</h4>';
+        foreach($form_errors as $form_error){
+          $form_msg .= '<h5>' . $form_error . '</h5>';
+        };
+        $form_msg .= '</div>';
+        return $form_msg;
+      } else { // Mo form errors - all fields were filled in, lets move forwards..
+        $password = password_hash($reg_password, PASSWORD_BCRYPT, array('cost' => 12, ));
+
+        $query = "INSERT INTO users (username, user_firstname, user_lastname, user_email, user_password, user_role) ";
+        $query .= "VALUES ('{$reg_username}', '{$reg_firstname}', '{$reg_lastname}', '{$reg_email}', '{$reg_password}', 'subscriber') ";
         $register_user_query = mysqli_query($connection, $query);
-
-        confirm_query($register_user_query);
-
-        echo "<p class='text-center bg-success'> User registered. </p>";
-        echo "<script>setTimeout(\"location.href = 'index.php';\",1500);</script>";
-      } else {
-        echo "<p class='text-center bg-warning'>That username and/ or email exists. Please choose an alternative or login.</p>";
+        if(!$register_user_query){
+          die("QUERY FAILED " . mysqli_error($connection) . ' ' . mysqli_errno($connection));
+        };
+        $last_id = mysqli_insert_id($connection);
+        updateUsersOnline($last_id);
+        $form_msg = '<div class="form_msgs"><h5>Thanks' . $reg_username . ' Your registration is now complete<h5></div>';
+        return $form_msg;
       };
-      } else {
-        echo "<p class='text-center bg-warning'> Fields ('username', 'email' and 'password  ') cannot be empty. </p>";
-        echo "<script>setTimeout(\"location.href = 'registration.php';\",2000);</script>";
-      };
+    }; // end of register user
 
+    function showLoginFormErrors($form_errors){
+      global $connection;
+      echo "<h3>The following errors occured when trying to login: </h3>";
+      echo "<br>";
+      foreach($form_errors as $err_msg){
+        echo "<h2>" . $err_msg . "</h5>";
+      };
     };
 
-    function loginUSer($username, $password){
-      $connection;
+    function loginUser($username, $password){
+      global $connection;
 
       $username = trim($username);
       $password = trim($password);
@@ -205,6 +280,7 @@
 
     function usernameExists($username){
       global $connection;
+
       $query = "SELECT username FROM users WHERE username = '$username' ";
       $result = mysqli_query($connection, $query);
       confirm_query($result);
@@ -216,7 +292,7 @@
       };
     };
 
-    function EmailExists($email){
+    function emailExists($email){
       global $connection;
       $query = "SELECT user_email FROM users WHERE user_email = '$email' ";
       $result = mysqli_query($connection, $query);
