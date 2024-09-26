@@ -1,5 +1,7 @@
   <?php include "includes/admin_header.php"; ?>
 
+
+<<?php if(isset($_SESSION['username'])){ ?>
 <body>
 
     <div id="wrapper">
@@ -22,9 +24,9 @@
                             Welcome to Admin
                             <small>
                               <?php
-                                if(isset($_SESSION['username'])){
+
                                   echo $_SESSION['username'];
-                                };
+
                               ?>
                           </small>
                         </h1>
@@ -200,4 +202,7 @@
 
         </div>
 
+      <?php } else {
+        header("Location: ../index.php");
+      }; ?>
         <?php include "includes/admin_footer.php"; ?>
