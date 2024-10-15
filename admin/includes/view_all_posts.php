@@ -149,9 +149,19 @@ include "includes/delete_modal.php";
 
                   echo "<td>{$post_date}</td>";
                   echo "<td>{$post_view_count}</td>";
-                  echo "<td><a href='../post.php?p_id={$post_id}'>View Post</a></td>";
-                  echo "<td><a href='posts.php?source=edit_post&p_id={$post_id}'>Edit Post</a></td>";
-                  echo "<td><a rel='$post_id' href='javascript:void(0)' class='delete_link'>Delete Post</a></td>";
+                  echo "<td><a class='btn btn-info' href='../post.php?p_id={$post_id}'>View Post</a></td>";
+                  echo "<td><a class='btn btn-warning' href='posts.php?source=edit_post&p_id={$post_id}'>Edit Post</a></td>";
+          ?>
+
+                  <form method="post">
+                    <input type="hidden" name="post_id" value="<?php echo $post_id ?>">
+                    <?php
+                      echo '<td><input class="btn btn-danger" type="submit" name="delete" value="Delete"></td>';
+                    ?>
+                  </form>
+
+          <?php
+                  // echo "<td><a rel='$post_id' href='javascript:void(0)' class='delete_link'>Delete Post</a></td>";
                   echo "</tr>";
               };
           ?>
@@ -163,9 +173,9 @@ include "includes/delete_modal.php";
 
   if(isset($_SESSION['user_role'])){
     if($_SESSION['user_role'] == 'admin'){
-     if(isset($_GET['delete'])){
+     if(isset($_POST['delete'])){
        global $connection;
-          $the_post_id = $_GET['delete'];
+          $the_post_id = $_POST['post_id'];
           $query = "DELETE FROM posts WHERE post_id = {$the_post_id} ";
           $delete_post_query = mysqli_query($connection, $query);
          header("Location: posts.php");
