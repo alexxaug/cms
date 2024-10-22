@@ -58,11 +58,11 @@ include "includes/delete_modal.php";
                 };
 
                 echo "<td>{$comment_date}</td>";
-                echo "<td><a href='comments.php?approve=$comment_id'>Approve</a></td>";
-                echo "<td><a href='comments.php?unapprove=$comment_id'</a>Unapprove</td>";
+                echo "<td><a class='btn btn-success' href='comments.php?approve=$comment_id'>Approve</a></td>";
+                echo "<td><a class='btn btn-warning' href='comments.php?unapprove=$comment_id'</a>Unapprove</td>";
                 // echo "<td><a onClick=\"javascript: return confirm('Are you sure that you would like to delete this comment?') \"
                 //       href='comments.php?delete=$comment_id'>Delete</a></td>";
-                echo "<td><a rel='$comment_id' href='javascript:void(0)' class='delete_link'>Delete Comment</a></td>";
+                echo "<td><a class='btn btn-danger' rel='$comment_id' href='javascript:void(0)' class='delete_link'>Delete Comment</a></td>";
                 echo "</tr>";
             };
         ?>
