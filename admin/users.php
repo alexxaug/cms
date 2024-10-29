@@ -1,6 +1,6 @@
 <?php include "includes/admin_header.php"; ?>
 <?php
-  if(!isAdmin($_SEESION['username'])){
+  if(!isAdmin($_SESSION['username'])){
     header("Location: index.php");
   };
 ?>
@@ -36,6 +36,7 @@
                         </h1>
 
                         <?php
+
                             if(isset($_GET['source'])){
                                 $source = $_GET['source'];
 
